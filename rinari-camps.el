@@ -83,7 +83,7 @@ prefix argument allows editing of the console command arguments."
     ("w" . 'rinari-camps-web-server))
   "alist mapping of keys to functions in `rinari-camps-minor-mode'")
 
-(mapcar (lambda (el) (rinari-camps-bind-key-to-func (car el) (cdr el)))
+(mapc (lambda (el) (rinari-camps-bind-key-to-func (car el) (cdr el)))
 	rinari-camps-minor-mode-keybindings)
 
 ;;;###autoload

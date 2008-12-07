@@ -75,6 +75,9 @@
 (defvar rinari-merb-minor-mode-hook nil
   "*Hook for customising Rinari-Merb.")
 
+(defvar rinari-merb-minor-mode)
+
+
 (defadvice ruby-compilation-run (around rinari-merb-compilation-run activate)
   "Set default directory to the root of the rails application
   before running ruby processes."
@@ -313,7 +316,7 @@ renders and redirects to find the final controller or view."
       ;; no controller entry so return
       (list controller action))))
 
-(setf
+(defvar
  rinari-merb-jump-schema
  '((model
     "m"
@@ -473,7 +476,7 @@ renders and redirects to find the final controller or view."
    (plugin "l" ((t . "vendor/plugins/")) nil)
    (file-in-project "f" ((t . ".*")) nil)))
 
-(mapcar
+(mapc
  (lambda (type)
    (let ((name (first type))
 	 (specs (third type))
@@ -509,7 +512,7 @@ renders and redirects to find the final controller or view."
     ("w" . 'rinari-merb-merb)                ("x" . 'rinari-merb-extract-partial))
   "alist mapping of keys to functions in `rinari-merb-minor-mode'")
 
-(mapcar (lambda (el) (rinari-merb-bind-key-to-func (car el) (cdr el)))
+(mapc (lambda (el) (rinari-merb-bind-key-to-func (car el) (cdr el)))
 	(append (mapcar (lambda (el)
 			  (cons (concat "f" (second el))
 				(read (format "'rinari-merb-find-%S" (first el)))))
@@ -532,7 +535,7 @@ otherwise turn `rinari-merb-minor-mode' off if it is on."
   '('find-file-hook 'mumamo-after-change-major-mode-hook 'dired-mode-hook)
   "Major Modes from which to launch Rinari-Merb.")
 
-(mapcar (lambda (hook)
+(mapc (lambda (hook)
 	  (eval `(add-hook ,hook
 			   (lambda () (rinari-merb-launch)))))
 	rinari-merb-major-modes)

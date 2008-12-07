@@ -173,6 +173,9 @@ prefix argument allows editing of the console command arguments."
 		    script)))
     (run-ruby command)
     (save-excursion
+      ; shut the byte compiler up
+      (defvar inf-ruby-first-prompt-pattern)
+      (defvar inf-ruby-prompt-pattern)
       (set-buffer "*ruby*")
       (set (make-local-variable 'inf-ruby-first-prompt-pattern) "^>> ")
       (set (make-local-variable 'inf-ruby-prompt-pattern) "^>> ")
@@ -502,7 +505,7 @@ renders and redirects to find the final controller or view."
 	      (list (car cv) (cdr cv))))))
       . "app/views/\\1/\\2.*")))))
 
-(mapcar
+(mapc
  (lambda (type)
    (let ((name (first type))
 	 (specs (third type))
@@ -539,7 +542,7 @@ renders and redirects to find the final controller or view."
     (";" . 'rinari-find-by-context)     ("'" . 'rinari-find-by-context))
   "alist mapping of keys to functions in `rinari-minor-mode'")
 
-(mapcar (lambda (el) (rinari-bind-key-to-func (car el) (cdr el)))
+(mapc (lambda (el) (rinari-bind-key-to-func (car el) (cdr el)))
 	(append (mapcar (lambda (el)
 			  (cons (concat "f" (second el))
 				(read (format "'rinari-find-%S" (first el)))))
@@ -562,7 +565,7 @@ otherwise turn `rinari-minor-mode' off if it is on."
   '('find-file-hook 'mumamo-after-change-major-mode-hook 'dired-mode-hook)
   "Major Modes from which to launch Rinari.")
 
-(mapcar (lambda (hook)
+(mapc (lambda (hook)
 	  (eval `(add-hook ,hook
 			   (lambda () (rinari-launch)))))
 	rinari-major-modes)
