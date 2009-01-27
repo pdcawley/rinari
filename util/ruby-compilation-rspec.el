@@ -10,7 +10,7 @@
                                    "-e"))))
 
 (fset 'ruby-compilation-this-test-name-old
-  'ruby-compilation-this-test-name)
+      (symbol-function 'ruby-compilation-this-test-name))
 
 (defun ruby-compilation-this-test-name ()
   (if (equal ruby-compilation-executable "spec")
@@ -20,7 +20,7 @@
 (defun ruby-compilation-this-spec-name ()
   "Which test are we currently in?"
   (save-excursion
-    (search-backward-regexp "it [\"']\\(.*\\)[\"'] do")
+    (search-backward-regexp "\\(?:it\\|specify\\|example\\) [\"']\\(.*\\)[\"'] do")
     (match-string 1)))
   
 (provide 'ruby-compilation-rspec)
